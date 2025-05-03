@@ -31,36 +31,47 @@ velosDisponibles = [
     { ID : "Vélo casual", Modèle : "Vélo de ville", Disponible : true, Couleur : "gris" },
     { ID : "Vélo casual 2", Modèle : "Vélo de ville", Disponible : true, Couleur : "blanc" },
 ];
-let gestionLocation = "oui"
 
-while (gestionLocation.toLowerCase() === "oui"){
-
+function afficherVelos() {
     console.log("Voici les vélos actuellement disponibles en magasin :")
 
     let veloDisponibleMaintenant = velosDisponibles.filter(velo => velo.Disponible);
     veloDisponibleMaintenant.forEach(velo => console.log(`ID : ${velo.ID} | Modèle : ${velo.Modèle} | Couleur : ${velo.Couleur} `));
+}
 
+function louerVelo() {
+    let véloVoulu = prompt("Quel vélo voulez-vous parmi ceux disponibles ? (Tapez l'ID).").toLowerCase();
+    let véloTrouvé = velosDisponibles.find(velo => velo.ID.toLowerCase() === véloVoulu);
+
+    if (véloTrouvé && véloTrouvé.Disponible){
+        véloTrouvé.Disponible = false;
+        console.log(`Vous venez de louer le vélo suivant : ${véloTrouvé.ID}.`)
+    } else {
+        alert("Malheureusement le vélo demandé n'est actuellement pas disponible !")
+    }
+}
+
+function rendreVelo() {
+    let véloaRendre = prompt("Quel vélo souhaitez-vous rendre ?").toLowerCase();
+    let véloEmprunté = velosDisponibles.find(velo => velo.ID.toLowerCase() === véloaRendre);
+    
+    if (véloEmprunté && véloEmprunté.Disponible === false){
+        véloEmprunté.Disponible = true; 
+        console.log(`Vous venez de rendre le vélo suivant : ${véloEmprunté.ID}.`)
+    } else {
+        alert("Le vélo que vous souhaitez n'existe pas chez nous.");
+    }
+}
+
+let gestionLocation = "oui"
+while (gestionLocation.toLowerCase() === "oui"){
+
+    afficherVelos();
     let louerRendre = prompt("Que voulez-vous faire : louer ou rendre un vélo ?").toLowerCase();
 
     if (louerRendre === "louer"){
-        let véloVoulu = prompt("Quel vélo voulez-vous parmi ceux disponibles ? (Tapez l'ID).").toLowerCase();
-        let véloTrouvé = velosDisponibles.find(velo => velo.ID.toLowerCase() === véloVoulu);
-
-        if (véloTrouvé && véloTrouvé.Disponible){
-            véloTrouvé.Disponible = false;
-            console.log(`Vous venez de louer le vélo suivant : ${véloTrouvé.ID}.`)
-        } else {
-            alert("Malheureusement le vélo demandé n'est actuellement pas disponible !")
-        }
+        louerVelo();
     } else if (louerRendre === "rendre"){
-        let véloaRendre = prompt("Quel vélo souhaitez-vous rendre ?").toLowerCase();
-        let véloEmprunté = velosDisponibles.find(velo => velo.ID.toLowerCase() === véloaRendre);
-        
-        if (véloEmprunté && véloEmprunté.Disponible === false){
-            véloEmprunté.Disponible = true; 
-            console.log(`Vous venez de rendre le vélo suivant : ${véloEmprunté.ID}.`)
-        } else {
-            alert("Le vélo que vous souhaitez n'existe pas chez nous.");
-        }
+        rendreVelo();
     } gestionLocation = prompt("Souhaitez-vous louer ou rendre un autre vélo ?").toLowerCase();
 }
